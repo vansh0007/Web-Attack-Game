@@ -8,9 +8,9 @@ function monsterAttack() {
   console.log(monsterHealthBar.value + "   " + playerHealthBar.value);
 
   if (monsterHealthBar.value <= 0 && playerHealthBar.value >= 0) {
-    alert("Palyer Won");
+    alert("Player Won");
   } else if (monsterHealthBar.value >= 0 && playerHealthBar.value <= 0) {
-    alert("Monster WOn");
+    alert("Monster Won");
   }
 
   dealMonsterDamage(DAMAGE);
