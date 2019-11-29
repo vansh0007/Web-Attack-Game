@@ -19,3 +19,4 @@ function monsterAttack() {
 }
 
 attackBtn.addEventListener("click", monsterAttack);
+console.log("HI There");
