@@ -1,35 +1,21 @@
-let INITIAL_HEALTH =100;
+let INITIAL_HEALTH = 100;
 let current_HEALTH = INITIAL_HEALTH;
-const DAMAGE= 10;
+const DAMAGE = 10;
 
 adjustHealthBars(INITIAL_HEALTH);
 
- 
-function  monsterAttack(){
-    console.log(monsterHealthBar.value+ "   "+ playerHealthBar.value);
+function monsterAttack() {
+  console.log(monsterHealthBar.value + "   " + playerHealthBar.value);
 
-    if(monsterHealthBar.value<=0 && playerHealthBar.value>=0){
-        
-        alert("Palyer Won");
-        }
-        else if ((monsterHealthBar.value>=0) && (playerHealthBar.value<=0)) {
-            alert("Monster WOn");
-        
-        
-        }
+  if (monsterHealthBar.value <= 0 && playerHealthBar.value >= 0) {
+    alert("Palyer Won");
+  } else if (monsterHealthBar.value >= 0 && playerHealthBar.value <= 0) {
+    alert("Monster WOn");
+  }
 
+  dealMonsterDamage(DAMAGE);
 
-
-dealMonsterDamage(DAMAGE);
- 
-
-
-
-
-dealPlayerDamage(DAMAGE);
-
- 
+  dealPlayerDamage(DAMAGE);
 }
 
-
-attackBtn.addEventListener('click',monsterAttack);
+attackBtn.addEventListener("click", monsterAttack);
