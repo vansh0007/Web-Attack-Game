@@ -1,11 +1,17 @@
-let INITIAL_HEALTH = 100;
+let INITIAL_HEALTH;
 let CURRENT_HEALTH = INITIAL_HEALTH;
+let playercurrent;
 const STRONG_HEALTH = 17;
 const HEAL_HEALTH = 20;
 const DAMAGE = 10;
-let playercurrent;
+let logbook = [];
 
 let IS_AVAIL = true;
+
+INITIAL_HEALTH = prompt("Please select the maximum value:", "100");
+if (INITIAL_HEALTH <= 0 || isNaN(INITIAL_HEALTH)) {
+  INITIAL_HEALTH = 100;
+}
 
 adjustHealthBars(INITIAL_HEALTH);
 
@@ -19,27 +25,59 @@ function validity() {
 
   if (monsterHealthBar.value <= 0 && playerHealthBar.value >= 0) {
     alert("Player Won");
+    restartGame();
   } else if (monsterHealthBar.value >= 0 && playerHealthBar.value <= 0) {
     alert("Monster Won");
+    restartGame();
   } else if (monsterHealthBar.value <= 0 && playerHealthBar.value <= 0) {
     alert("Match is drawn:");
+    restartGame();
   }
 }
 
-function handler(mode) {
-  playercurrent = 0;
+function logPrint(ev, val, PlayerFinal, finalMonster) {
+  object = {
+    event: ev,
+    intialPvalue: val,
+    FinalPvalue: PlayerFinal,
+    FinalMvalue: finalMonster
+  };
 
+  logbook.push(object);
+}
+
+function restartGame() {
+  resetGame(INITIAL_HEALTH);
+  IS_AVAIL = true;
+}
+
+function handler(mode) {
   if (mode === "STRONG") {
     dealMonsterDamage(STRONG_HEALTH);
 
-    playercurrent = dealPlayerDamage(STRONG_HEALTH);
+    const playercurrent = dealPlayerDamage(STRONG_HEALTH);
+
+    logPrint(
+      mode,
+      playercurrent,
+      playerHealthBar.value,
+      monsterHealthBar.value
+    );
+    validity();
 
     validity();
   } else if (mode === "NORMAL") {
     dealMonsterDamage(DAMAGE);
+    const playercurrent = dealPlayerDamage(DAMAGE);
 
-    playercurrent = dealPlayerDamage(DAMAGE);
+    const PlayerFinal = playerHealthBar.value;
 
+    logPrint(
+      mode,
+      playercurrent,
+      playerHealthBar.value,
+      monsterHealthBar.value
+    );
     validity();
   } else if (mode === "HEAL") {
     let healvalue;
@@ -50,8 +88,12 @@ function handler(mode) {
     } else {
       healvalue = HEAL_HEALTH;
     }
-
+    const playercurrent = playerHealthBar.value;
     increasePlayerHealth(healvalue);
+    const finalMonster = monsterHealthBar.value;
+
+    const PlayerFinal = playerHealthBar.value;
+    logPrint(mode, playercurrent, PlayerFinal, finalMonster);
     validity();
   }
 }
@@ -65,10 +107,14 @@ function strongAttack() {
 }
 
 function monsterAttack() {
-  console.log(CURRENT_HEALTH + " HEAL PLAYER:");
   handler("NORMAL");
+}
+
+function showLog() {
+  console.log(logbook);
 }
 
 attackBtn.addEventListener("click", monsterAttack);
 strongAttackBtn.addEventListener("click", strongAttack);
 healBtn.addEventListener("click", healPlayer);
+logBtn.addEventListener("click", showLog);
